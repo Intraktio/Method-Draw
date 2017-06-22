@@ -111,6 +111,7 @@
     //  - invoke a file chooser dialog in 'save' mode
     //  - save the file to location chosen by the user
     Editor.setCustomHandlers = function(opts) {
+      console.log(opts);
       Editor.ready(function() {
         if(opts.open) {
           $('#tool_open > input[type="file"]').remove();
