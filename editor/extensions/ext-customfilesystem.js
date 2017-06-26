@@ -14,19 +14,74 @@
 */
  
 methodDraw.addExtension("Custom filesystem", function(canvasMethods) {
+    console.log(canvasMethods);
 
     var fileMenu = $("#file_menu");
+    var toolSave = fileMenu.find("#tool_save");
+
     fileMenu.find("#tool_clear").hide();
     fileMenu.find("#tool_open").text("Open");
-    fileMenu.find("#tool_save").text("Save");
+    toolSave.text("Save").addClass("disabled");
     fileMenu.find("#tool_import").insertAfter(fileMenu.find("#tool_save"));
 
     methodDraw.setCustomHandlers({
         open: function() {
+            var dialog = createFileOpenDialog();
         },
         save: function() {
         }
     });
+
+    var files = {
+        "floor-0": {
+            name: "Floor 0",
+            src: ""
+        },
+        "floor-1": {
+            name: "Floor 1",
+            src: "maps/floor-1.svg"
+        },
+        "floor-2": {
+            name: "Floor 2",
+            src: ""
+        }
+    };
+    var selectedFile = null;
+
+    function openFile(id) {
+        selectedFile = files[id];
+        toolSave.removeClass("disabled");
+        methodDraw.loadFromURL(selectedFile.src, {
+            callback: function(success) {
+                if (success) {
+                    svgCanvas.undoMgr.resetUndoStack();
+                }
+            }
+        });
+    }
+
+    function createFileOpenDialog() {
+        var content = '<select>';
+        for (var k in files) {
+            content += '<option value="' + k + '">' + files[k].name + '</option>';
+        }
+        content += '</select>';
+        $.confirm('Select file to edit:\n' + content, function(confirmed) {
+            if (!confirmed) {
+                return;
+            }
+            var selected = $('#dialog_content select option:selected');
+            if (svgCanvas.undoMgr.getUndoStackSize() === 0 && svgCanvas.undoMgr.getRedoStackSize() === 0) {
+                openFile(selected.val())
+                return;
+            }
+            $.confirm(methodDraw.uiStrings.notification.QwantToOpen, function(confirmed) {
+                if (confirmed) {
+                    openFile(selected.val())
+                }
+            });
+        });
+    }
 
     return {
       name: "Hello World",
