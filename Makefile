@@ -1,6 +1,6 @@
 NAME=method-draw
 VERSION=2.6
-PACKAGE=$(NAME)
+PACKAGE=dist
 MAKEDOCS=naturaldocs/NaturalDocs
 CLOSURE=build/tools/closure-compiler.jar
 YUICOMPRESSOR=build/tools/yuicompressor-2.4.7.jar
@@ -48,8 +48,8 @@ CSS_INPUT_FILES=$(addprefix editor/, $(CSS_FILES))
 JS_BUILD_FILES=$(addprefix $(PACKAGE)/, $(JS_FILES))
 CSS_BUILD_FILES=$(addprefix $(PACKAGE)/, $(CSS_FILES))
 CLOSURE_JS_ARGS=$(addprefix --js , $(JS_INPUT_FILES))
-COMPILED_JS=editor/method-draw.compiled.js
-COMPILED_CSS=editor/css/method-draw.compiled.css
+COMPILED_JS=$(PACKAGE)/method-draw.compiled.js
+COMPILED_CSS=$(PACKAGE)/method-draw.compiled.css
 
 all: release
 
@@ -70,17 +70,25 @@ $(PACKAGE): $(COMPILED_JS) $(COMPILED_CSS)
 	# Create the release version of the main HTML file.
 	build/tools/ship.py --i=editor/index.html --on=svg_edit_release > $(PACKAGE)/index.html
 
+	mv $(PACKAGE)/src/embedapi.js $(PACKAGE)/
+	mv $(PACKAGE)/lib/jquery.js $(PACKAGE)/
+	rm -rf $(PACKAGE)/src
+	rm -rf $(PACKAGE)/css
+	rm -rf $(PACKAGE)/lib
+
 # NOTE: Some files are not ready for the Closure compiler: (jquery)
 # NOTE: Our code safely compiles under SIMPLE_OPTIMIZATIONS
 # NOTE: Our code is *not* ready for ADVANCED_OPTIMIZATIONS
 # NOTE: WHITESPACE_ONLY and --formatting PRETTY_PRINT is helpful for debugging.
 
 $(COMPILED_CSS):
-	cat $(CSS_INPUT_FILES) > editor/temp.css;
-	java -jar $(YUICOMPRESSOR) editor/temp.css -o $(COMPILED_CSS) --line-break 0;
-	rm editor/temp.css;
+	mkdir -p $(PACKAGE)
+	cat $(CSS_INPUT_FILES) > $(PACKAGE)/temp.css;
+	java -jar $(YUICOMPRESSOR) $(PACKAGE)/temp.css -o $(COMPILED_CSS) --line-break 0;
+	rm $(PACKAGE)/temp.css;
 
 $(COMPILED_JS):
+	mkdir -p $(PACKAGE)
 	java -jar $(CLOSURE) \
 		--compilation_level SIMPLE_OPTIMIZATIONS \
 		$(CLOSURE_JS_ARGS) \
