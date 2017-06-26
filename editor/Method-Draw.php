@@ -12,8 +12,12 @@ Text Domain: method-draw
 */
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
-function include_method_draw_embed_api() {
-	wp_enqueue_script( 'method-draw-embedapi', plugin_dir_url( __FILE__ ) . 'src/embedapi.js', array('jquery'), '2.5' );
+function enqueue_method_draw_embedapi_scripts() {
+	wp_enqueue_script( 'method-draw-embedapi', plugin_dir_url( __FILE__ ) . 'embedapi.js', array(), '2.5' );
+}
+
+function get_method_draw_url() {
+	return plugin_dir_url( __FILE__ ) . 'index.html';
 }
 
 ?>
