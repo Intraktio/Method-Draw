@@ -68,7 +68,11 @@ $(PACKAGE): $(COMPILED_JS) $(COMPILED_CSS)
 	-find $(PACKAGE) -name .git -type d | xargs rm -rf {} \;
 
 	# Create the release version of the main HTML file.
-	build/tools/ship.py --i=editor/index.html --on=svg_edit_release > $(PACKAGE)/index.html
+	build/tools/ship.py --i=editor/scripts.php --on=svg_edit_release > $(PACKAGE)/scripts.php
+	cat $(PACKAGE)/head.php $(PACKAGE)/scripts.php $(PACKAGE)/body.php > $(PACKAGE)/index.html
+
+	# Create the release version of the main HTML file for WordPress.
+	cat editor/head.php editor/scripts-wp.php editor/body.php > $(PACKAGE)/wp-index.php
 
 	mv $(PACKAGE)/src/embedapi.js $(PACKAGE)/
 	mv $(PACKAGE)/lib/jquery.js $(PACKAGE)/

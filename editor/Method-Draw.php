@@ -16,8 +16,8 @@ function enqueue_method_draw_embedapi_scripts() {
 	wp_enqueue_script( 'method-draw-embedapi', plugin_dir_url( __FILE__ ) . 'embedapi.js', array(), '2.5' );
 }
 
-function get_method_draw_url() {
-	return plugin_dir_url( __FILE__ ) . 'index.html';
+function get_method_draw_index_url() {
+	return plugin_dir_url( __FILE__ ) . 'index-wp.php';
 }
 
 ?>
