@@ -72,7 +72,7 @@ $(PACKAGE): $(COMPILED_JS) $(COMPILED_CSS)
 	cat $(PACKAGE)/head.php $(PACKAGE)/scripts.php $(PACKAGE)/body.php > $(PACKAGE)/index.html
 
 	# Create the release version of the main HTML file for WordPress.
-	cat editor/head.php editor/scripts-wp.php editor/body.php > $(PACKAGE)/wp-index.php
+	cat editor/head.php editor/scripts-wp.php editor/body.php > $(PACKAGE)/index-wp.php
 
 	mv $(PACKAGE)/src/embedapi.js $(PACKAGE)/
 	mv $(PACKAGE)/lib/jquery.js $(PACKAGE)/

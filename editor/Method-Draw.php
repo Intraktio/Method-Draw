@@ -1,4 +1,4 @@
-f<?php 
+<?php 
 /*
 Plugin Name: Method draw
 Plugin URI:  intraktio.com
@@ -18,6 +18,10 @@ function enqueue_method_draw_embedapi_scripts() {
 
 function get_method_draw_index_url() {
 	return plugin_dir_url( __FILE__ ) . 'index-wp.php';
+}
+
+function the_method_draw_editor() {
+	include(plugin_dir_path( __FILE__ ) . 'index-wp.php');
 }
 
 ?>
