@@ -30,7 +30,7 @@ methodDraw.addExtension("server_opensave", {
         var c = $('#export_canvas')[0];
         c.width = svgCanvas.contentW;
         c.height = svgCanvas.contentH;
-        $.getScript('canvg/canvg.js', function() {
+        $.getScript('lib/canvg/canvg.js', function() {
         canvg(c, svg, {renderCallback: function() {
           var datauri = c.toDataURL('image/png');
           var uiStrings = methodDraw.uiStrings;

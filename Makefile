@@ -74,11 +74,15 @@ $(PACKAGE): $(COMPILED_JS) $(COMPILED_CSS)
 	# Create the release version of the main HTML file for WordPress.
 	cat editor/head.php editor/scripts-wp.php editor/body.php > $(PACKAGE)/index-wp.php
 
+	mv $(PACKAGE)/lib $(PACKAGE)/_libs
+	mkdir $(PACKAGE)/lib
+
 	mv $(PACKAGE)/src/embedapi.js $(PACKAGE)/
-	mv $(PACKAGE)/lib/jquery.js $(PACKAGE)/
+	mv $(PACKAGE)/_libs/jquery.js $(PACKAGE)/
+	mv $(PACKAGE)/_libs/canvg $(PACKAGE)/lib/
 	rm -rf $(PACKAGE)/src
 	rm -rf $(PACKAGE)/css
-	rm -rf $(PACKAGE)/lib
+	rm -rf $(PACKAGE)/_libs
 
 # NOTE: Some files are not ready for the Closure compiler: (jquery)
 # NOTE: Our code safely compiles under SIMPLE_OPTIMIZATIONS
